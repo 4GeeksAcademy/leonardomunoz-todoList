@@ -31,7 +31,7 @@ const Home = () => {
 			return
 		}
 		setListArr([...ListsArr,theList])
-		setTheList({list:""})
+		setTheList(initialState)
 	}
 	const handleDelete = (item) => {
 
