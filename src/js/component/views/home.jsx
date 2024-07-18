@@ -5,11 +5,13 @@ import React, { useState } from "react";
 const Home = () => {
 
 	const initialState = {
-		"list": "",
+		list: "",
+		done:""
 	}
 
 	const [theList,setTheList] = useState(initialState);
 	const [ListsArr,setListArr] = useState([]);
+	const [isTrueBotton, setIsTrueBotton] = useState(true)
 	const [error,setError] = useState("");
 
 	const  handleList = (e) => {
@@ -30,25 +32,22 @@ const Home = () => {
 			setError("border-3 border-danger")
 			return
 		}
-		setListArr([...ListsArr,theList])
+		setListArr([theList,...ListsArr])
 		setTheList(initialState)
 	}
-	const handleDelete = (item) => {
-
-		if (!ListsArr.includes(item)) {
-			console.log("elimina el elemento")
-		}
-		
-		
-	}//  eliminar el focus al aparecer la clase de error.
-	// modificar el valor por defecto de Type your task a empty task here!
+	const handleDelete = (id) => {
+		const taskDelete = ListsArr.filter((item,index)=>  index != id)
+		setListArr(taskDelete)
+	}
+	//  Eliminar el focus al aparecer la clase de error.
+	//   modificar el valor por defecto de Type your task a empty task here!
 	return (
 		<>
 			<div className="row d-flex flex-column align-items-center">
 					<div className="col-12 md-7">
 						<div className="container">
 							<h1 className="text-center mt-5 mb-3">TODOS
-								<i className="fas fa-tasks ms-3 "></i>
+								<i className="fas fa-tasks ms-3 " ></i>
 							</h1>
 						<ul className="list-group " style={{"margin":"auto","maxWidth":"50rem"}}>
 							<form 
@@ -57,7 +56,7 @@ const Home = () => {
 								onSubmit={handleSubmit}
 							>
 							<input
-								className={`border rounded-1 p-2 w-100 ${error}`} 
+								className={`border rounded-1 p-2 w-100  ${error}`} 
 								type="text" 
 								placeholder="Type your task"
 								onChange={handleList}
@@ -66,11 +65,15 @@ const Home = () => {
 							/>
 							</form>
 
-							{ListsArr.map((item)=> {
+							{ListsArr.map((item,index)=> {
 								return (
-									<li className="list-group-item d-flex justify-content-between align-items-center ">
+									<li key={index} className="list-group-item d-flex justify-content-between align-items-center ">
 										{item.list}
-									<i onClick={handleDelete}  className="btn btn-sm fas fa-trash"></i>
+									<i 
+										onClick={() => handleDelete(index)}  
+										className="btn btn-sm fas fa-trash" 
+										
+									></i>
 							</li>
 								)
 							})}
